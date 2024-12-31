@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Countdown with Fireworks</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: black;
+            color: white;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin: 0;
+        }
+
+        #countdown {
+            font-size: 3em;
+            margin: 20px;
+        }
+
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Countdown to 2025</h1>
+    <div id="countdown"></div>
+
+    <script>
+        const countdownElement = document.getElementById('countdown');
+
+        function updateCountdown() {
+            const now = new Date();
+            const targetDate = new Date('January 1, 2025 00:00:00');
+            const timeDifference = targetDate - now;
+
+            if (timeDifference <= 0) {
+                countdownElement.textContent = "Happy New Year!";
+                triggerFireworks();
+                clearInterval(interval);
+                return;
+            }
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        function triggerFireworks() {
+            for (let i = 0; i < 20; i++) {
+                createFirework();
+            }
+        }
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.width = firework.style.height = `${Math.random() * 10 + 5}px`;
+            firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            firework.style.left = `${Math.random() * window.innerWidth}px`;
+            firework.style.top = `${Math.random() * window.innerHeight}px`;
+            document.body.appendChild(firework);
+
+            firework.addEventListener('animationend', () => {
+                firework.remove();
+            });
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
